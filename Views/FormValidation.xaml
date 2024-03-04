@@ -49,24 +49,46 @@
         </Grid>
         <Entry Placeholder="הכנס גיל גדול מ 13" Text="{Binding Age}" Style="{StaticResource entryStyle}" Keyboard="Numeric"/>
 
-
-        <Label Text="תאריך לידה" FontSize="Small" />
-        <DatePicker >
+        <!-- תאריך -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Text="תאריך לידה" Grid.Column="0" Style="{StaticResource labelNameStyle}"/>
+            <Label Text="{Binding DateError}" IsVisible="{Binding ShowDateError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}"/>
+        </Grid>
+        <DatePicker Date="{Binding Date}" MinimumDate="01/01/2005">
         </DatePicker>
 
         <Label Text="דואר אלקטרוני" FontSize="Small" />
         <Entry Placeholder="הכנס דואר אלקטרוני" >
         </Entry>
         <Label Text="סיסמה" FontSize="Small" />
-        <Entry x:Name="txtpassword" IsPassword="True" Placeholder="הכנס סיסמה" >
+        <Entry x:Name="txtpassword" IsPassword="True" Placeholder="הכנס סיסמה" Text="{Binding Password}">
         </Entry>
 
-        <Label Text="אישור סיסמה" FontSize="Small" />
-        <Entry IsPassword="True" Placeholder="הכנס סיסמה זהה לזו שלמלעלה">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Text="אישור סיסמה" Grid.Column="0" Style="{StaticResource labelNameStyle}"/>
+            <Label Text="{Binding PasswordError}" IsVisible="{Binding ShowPasswordError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}"/>
+        </Grid>
+        <Entry IsPassword="True" Placeholder="הכנס סיסמה זהה לזו שלמלעלה" Text="{Binding PasswordConfirmation}">
         </Entry>
+        
         <Label Text="טלפון" FontSize="Small" />
         <Entry  Placeholder="הכנס טלפון בן 10 ספרות" >
         </Entry>
-        <Button Text="שמור נתונים" Command="{Binding SaveDataCommand}"></Button>
+        <Button Text="שמור נתונים" Command="{Binding SaveDataCommand}" Style="{StaticResource buttonfontnewStyle}"></Button>
     </StackLayout>
 </ContentPage>

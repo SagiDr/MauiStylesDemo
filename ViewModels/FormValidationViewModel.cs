@@ -1,6 +1,7 @@
 ﻿using MauiStylesDemo;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,14 +91,123 @@ namespace MauiStylesDemo.ViewModels
             }
         }
 
+
         private void ValidateAge()
         {
             this.ShowAgeError = !Age.HasValue || Age <= 13;
         }
         #endregion
+        #region תאריך לידה
+        private DateTime date;
+
+        public DateTime Date
+        {
+            get => date;
+            set
+            {
+                date = value;
+                ValidateDate();
+                OnPropertyChanged("Date");
+            }
+        }
+
+        private DateTime today;
+
+        private string dateError;
+
+        public string DateError
+        {
+            get => dateError;
+            set
+            {
+                dateError = value;
+                OnPropertyChanged("DateError");
+            }
+        }
+
+        private bool showDateError;
+
+        public bool ShowDateError
+        {
+            get => showDateError;
+            set
+            {
+                showDateError = value;
+                OnPropertyChanged("ShowDateError");
+            }
+        }
+
+        private void ValidateDate()
+        {
+            TimeSpan diff = today.Subtract(date);
+            this.ShowDateError = diff.TotalDays < 13 * 364.25;
+        }
+        #endregion
+
+        #region סיסמא
+        private string password;
+
+        public string Password
+        {
+            get => password;
+            set
+            {
+                password = value;
+                OnPropertyChanged("Password");
+            }
+        }
+
+        private string passwordError;
+
+        public string PasswordError
+        {
+            get => passwordError;
+            set
+            {
+                passwordError = value;
+                OnPropertyChanged("PasswordError");
+            }
+        }
+
+        private bool showPasswordError;
+
+        public bool ShowPasswordError
+        {
+            get => showPasswordError;
+            set
+            {
+                showPasswordError = value;
+                OnPropertyChanged("ShowPasswordError");
+            }
+        }
+
+        private string passwordConfirmation;
+
+        public string PasswordConfirmation
+        {
+            get => passwordConfirmation;
+            set
+            {
+                passwordConfirmation = value;
+                ValidatePasswordConfirmation();
+                OnPropertyChanged("PasswordConfirmation");
+            }
+        }
+
+
+        private void ValidatePasswordConfirmation()
+        {
+            this.ShowPasswordError = Password != PasswordConfirmation;
+        }
+        #endregion
 
         public FormValidationViewModel()
         {
+            this.today = DateTime.Now;
+            this.DateError = "הגיל חייב להיות גדול מ-13";
+            this.ShowDateError = false;
+            this.PasswordError = "הסיסמאות לא שוות";
+            this.ShowPasswordError = false;
             this.NameError = "זהו שדה חובה";
             this.ShowNameError = false;
             this.AgeError = "הגיל חייב להיות גדול מ 13";
@@ -111,10 +221,12 @@ namespace MauiStylesDemo.ViewModels
             //Validate all fields first
             ValidateAge();
             ValidateName();
+            ValidatePasswordConfirmation();
+            ValidateDate();
 
             //check if any validation failed
             if (ShowAgeError ||
-                ShowNameError)
+                ShowNameError || showPasswordError || ShowDateError)
                 return false;
             return true;
         }
